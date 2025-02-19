@@ -6,6 +6,6 @@ package mvh.util;
  * @version 1.0
  */
 public final class Reader {
-    //TODO: readWorld
+    //TODO: loadWorld
 
 }

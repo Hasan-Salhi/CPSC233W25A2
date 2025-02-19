@@ -280,6 +280,8 @@ public class World {
         return entity instanceof Monster;
     }
 
+    //TODO: getLocal
+
     //TODO: worldString
 
     //TODO: gameString
