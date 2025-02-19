@@ -1,0 +1,122 @@
+Arguments: [world.txt, log.txt, 12345]
+World is 3x3 in size!
+New monster at (0,0) Mons(1)	M	10	ALIVE	SWORD
+Floor at (0,1)
+Floor at (0,2)
+Floor at (1,0)
+Floor at (1,1)
+Floor at (1,2)
+Floor at (2,0)
+Floor at (2,1)
+New hero at (2,2) Hero(2)	H	10	ALIVE	3	1
+#####
+#M..#
+#...#
+#..H#
+#####
+NAME   	S	H	STATE	INFO
+Mons(1)	M	10	ALIVE	SWORD
+Hero(2)	H	10	ALIVE	3	1
+
+Mons(1) moving SOUTHEAST
+Hero(2) attacking NORTHWEST in direction Mons(1)
+Hero(2) attacked Mons(1) for 2 damage against 2 defense for 0
+#####
+#...#
+#.M.#
+#..H#
+#####
+NAME   	S	H	STATE	INFO
+Mons(1)	M	10	ALIVE	SWORD
+Hero(2)	H	10	ALIVE	3	1
+
+Mons(1) attacking SOUTHEAST in direction Hero(2)
+Mons(1) attacked Hero(2) for 3 damage against 1 defense for 2
+Hero(2) attacking NORTHWEST in direction Mons(1)
+Hero(2) attacked Mons(1) for 1 damage against 2 defense for 0
+#####
+#...#
+#.M.#
+#..H#
+#####
+NAME   	S	H	STATE	INFO
+Mons(1)	M	10	ALIVE	SWORD
+Hero(2)	H	8	ALIVE	3	1
+
+Mons(1) attacking SOUTHEAST in direction Hero(2)
+Mons(1) attacked Hero(2) for 4 damage against 1 defense for 3
+Hero(2) attacking NORTHWEST in direction Mons(1)
+Hero(2) attacked Mons(1) for 2 damage against 2 defense for 0
+#####
+#...#
+#.M.#
+#..H#
+#####
+NAME   	S	H	STATE	INFO
+Mons(1)	M	10	ALIVE	SWORD
+Hero(2)	H	5	ALIVE	3	1
+
+Mons(1) attacking SOUTHEAST in direction Hero(2)
+Mons(1) attacked Hero(2) for 1 damage against 1 defense for 0
+Hero(2) attacking NORTHWEST in direction Mons(1)
+Hero(2) attacked Mons(1) for 2 damage against 2 defense for 0
+#####
+#...#
+#.M.#
+#..H#
+#####
+NAME   	S	H	STATE	INFO
+Mons(1)	M	10	ALIVE	SWORD
+Hero(2)	H	5	ALIVE	3	1
+
+Mons(1) attacking SOUTHEAST in direction Hero(2)
+Mons(1) attacked Hero(2) for 1 damage against 1 defense for 0
+Hero(2) attacking NORTHWEST in direction Mons(1)
+Hero(2) attacked Mons(1) for 2 damage against 2 defense for 0
+#####
+#...#
+#.M.#
+#..H#
+#####
+NAME   	S	H	STATE	INFO
+Mons(1)	M	10	ALIVE	SWORD
+Hero(2)	H	5	ALIVE	3	1
+
+Mons(1) attacking SOUTHEAST in direction Hero(2)
+Mons(1) attacked Hero(2) for 1 damage against 1 defense for 0
+Hero(2) attacking NORTHWEST in direction Mons(1)
+Hero(2) attacked Mons(1) for 3 damage against 2 defense for 1
+#####
+#...#
+#.M.#
+#..H#
+#####
+NAME   	S	H	STATE	INFO
+Mons(1)	M	9	ALIVE	SWORD
+Hero(2)	H	5	ALIVE	3	1
+
+Mons(1) attacking SOUTHEAST in direction Hero(2)
+Mons(1) attacked Hero(2) for 4 damage against 1 defense for 3
+Hero(2) attacking NORTHWEST in direction Mons(1)
+Hero(2) attacked Mons(1) for 2 damage against 2 defense for 0
+#####
+#...#
+#.M.#
+#..H#
+#####
+NAME   	S	H	STATE	INFO
+Mons(1)	M	9	ALIVE	SWORD
+Hero(2)	H	2	ALIVE	3	1
+
+Mons(1) attacking SOUTHEAST in direction Hero(2)
+Mons(1) attacked Hero(2) for 4 damage against 1 defense for 3
+Hero(2) died!
+#####
+#...#
+#.M.#
+#..$#
+#####
+NAME   	S	H	STATE	INFO
+Mons(1)	M	9	ALIVE	SWORD
+Hero(2)	H	0	DEAD	3	1
+
