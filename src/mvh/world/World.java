@@ -137,7 +137,7 @@ public class World {
     /**
      * Check if simulation has now ended (only one of two versus Entity types is alive
      */
-    private void checkActive() {
+    public void checkActive() {
         //TODO: checkActive
     }
 
