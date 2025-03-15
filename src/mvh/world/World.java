@@ -3,14 +3,15 @@ package mvh.world;
 import mvh.Main;
 import mvh.Menu;
 import mvh.enums.Direction;
+import mvh.enums.Symbol;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  * A World is a 2D grid of entities, null Spots are floor spots
- * @author Jonathan Hudson
- * @version 1.0b
+ * @author Jonathan Hudson, Hasan Salhi
+ * @version 1.1b
  */
 public class World {
 
@@ -56,7 +57,15 @@ public class World {
      * @param columns The 2D of the 2D world (columns)
      */
     public World(int rows, int columns) {
-        //TODO: Constructor
+        //Establishes all fields in World class to what they need to be
+        this.world = new Entity[rows][columns];
+
+        ArrayList<Entity> entities = new ArrayList<>();
+        this.entities = entities;
+
+        this.locations = new HashMap<>();
+
+        this.state = State.ACTIVE;
     }
 
     /**
@@ -138,7 +147,34 @@ public class World {
      * Check if simulation has now ended (only one of two versus Entity types is alive
      */
     public void checkActive() {
-        //TODO: checkActive
+        //Assumes all Dead until it finds one still alive
+        boolean allMonstersDead = true;
+        for (int row = 0; row < world.length; row++) {
+            for (int column = 0; column < world[row].length; column++) {
+                if (world[row][column] instanceof Monster) {
+                    if (world[row][column].isAlive()) {
+                        allMonstersDead = false;
+                    }
+                }
+            }
+        }
+
+        //Assumes all dead until finds a living Hero
+        boolean allHeroesDead = true;
+        for (int row = 0; row < world.length; row++) {
+            for (int column = 0; column < world[row].length; column++) {
+                if (world[row][column] instanceof Hero) {
+                    if (world[row][column].isAlive()) {
+                        allHeroesDead = false;
+                    }
+                }
+            }
+        }
+
+        if (allMonstersDead || allHeroesDead) {
+            this.state = State.INACTIVE;
+        }
+
     }
 
     /**
@@ -281,10 +317,96 @@ public class World {
     }
 
     //TODO: getLocal
+    //Check back later
 
-    //TODO: worldString
+    /**
+     * Return a nxn mini-view of the world
+     *
+     * @param size  Size of local world view we want (Must be odd)
+     * @param row   Desired row to be centered on
+     * @param column    Desired column to be centered on
+     *
+     * @return  world of size 3 centered at desired location
+     */
+    public World getLocal(int size, int row, int column) {
+        World localView = new World(size,size);
 
-    //TODO: gameString
+        Entity center = world[row][column];
+        int newRow = 0;
+        for (int i = row - (size-1)/2; i <= row + (size-1)/2; i++) {
+            int newCol = 0;
+            for (int j = column - (size-1)/2; j <= column + (size-1)/2; j++) {
+                if (i > world.length-1 || i < 0 || j > world[0].length-1 || j < 0) {
+                    localView.addEntity(newRow, newCol, Wall.getWall());
+                } else {
+                    localView.addEntity(newRow, newCol, world[i][j]);
+                }
+                newCol++;
+            }
+            newRow++;
+        }
+
+        return localView;
+    }
+
+    /**
+     * Writes a view of the map into a string
+     *
+     * @return view of the map using symbols to represent everything in one big string
+     */
+    public String worldString() {
+        StringBuilder output = new StringBuilder();
+        for (int row = 0; row < world.length; row++) {
+            for (int column = 0; column < world[row].length; column++) {
+                if (world[row][column] instanceof Wall) {
+                    output.append(Symbol.WALL.getSymbol());
+                } else if (world[row][column] instanceof Monster) {
+                    if (world[row][column].isAlive()) {
+                        output.append(world[row][column].getSymbol());
+                    } else if (world[row][column].isDead()) {
+                        output.append(Symbol.DEAD.getSymbol());
+                    }
+                } else if (world[row][column] instanceof Hero) {
+                    if (world[row][column].isAlive()) {
+                        output.append(world[row][column].getSymbol());
+                    } else if (world[row][column].isDead()) {
+                        output.append(Symbol.DEAD.getSymbol());
+                    }
+                } else {
+                    output.append(Symbol.FLOOR.getSymbol());
+                }
+            }
+            output.append("\n");
+        }
+        return output.toString();
+    }
+
+    /**
+     * Takes worldString and adds onto it, including data for each hero and monster
+     *
+     * @return worldString with all data beneath it in one big string
+     */
+    public String gameString() {
+        StringBuilder output = new StringBuilder();
+        worldString();
+        output.append("NAME\tS\tH\tSTATE\tINFO\n");
+        for (int row = 0; row < world.length; row++) {
+            for (int column = 0; column < world[row].length; column++) {
+                if (world[row][column] instanceof Monster) {
+                    String data = world[row][column].toString();
+
+                    output.append(data);
+                    //Finish later
+                } else if (world[row][column] instanceof Hero) {
+                    String data = world[row][column].toString();
+
+                    output.append(data);
+                    //Finish later
+                }
+            }
+        }
+        return output.toString();
+    }
 
     @Override
     public String toString() {
