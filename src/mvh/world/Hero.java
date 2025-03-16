@@ -84,46 +84,38 @@ public final class Hero extends Entity{
      * @return direction to reach monster or null if there are none nearby
      */
     public Direction attackWhere(World local) {
-        int heroRow = 0;
-        int heroCol = 0;
+
+        //This is under the assumption that the parameter local is already local to the hero
         for (int i = 0; i < local.getRows(); i++) {
             for (int j = 0; j < local.getColumns(); j++) {
-                if (local.isHero(i,j)) {
-                    heroRow = i;
-                    heroCol = j;
-                }
-            }
-        }
-
-        World heroLocal = local.getLocal(3,heroRow,heroCol);
-        for (int i = 0; i < heroLocal.getRows(); i++) {
-            for (int j = 0; j < heroLocal.getColumns(); j++) {
-                if (heroLocal.isMonster(i,j)) {
-                    Entity monster = heroLocal.getEntity(i,j);
-                    if (monster.isAlive()) {
-                        if (i == 0 && j == 0) {
-                            return Direction.getDirection(-1,-1);
-                        } else if (i == 0 && j == 1) {
-                            return Direction.getDirection(-1,0);
-                        } else if (i == 0 && j == 2) {
-                            return Direction.getDirection(-1,1);
-                        } else if (i == 1 && j == 0) {
-                            return Direction.getDirection(0,-1);
-                        } else if (i == 1 && j == 2) {
-                            return Direction.getDirection(0,1);
-                        } else if (i == 2 && j == 0) {
-                            return Direction.getDirection(1,-1);
-                        } else if (i == 2 && j == 1) {
-                            return Direction.getDirection(1,0);
-                        } else if (i == 2 && j == 2) {
-                            return Direction.getDirection(1,1);
+                if (i != 1 || j != 1) {
+                    if (local.isMonster(i, j)) {
+                        Entity monster = local.getEntity(i, j);
+                        if (monster.isAlive()) {
+                            if (i == 0 && j == 0) {
+                                return Direction.NORTHWEST;
+                            } else if (i == 0 && j == 1) {
+                                return Direction.NORTH;
+                            } else if (i == 0 && j == 2) {
+                                return Direction.NORTHEAST;
+                            } else if (i == 1 && j == 0) {
+                                return Direction.WEST;
+                            } else if (i == 1 && j == 2) {
+                                return Direction.EAST;
+                            } else if (i == 2 && j == 0) {
+                                return Direction.SOUTHWEST;
+                            } else if (i == 2 && j == 1) {
+                                return Direction.SOUTH;
+                            } else if (i == 2 && j == 2) {
+                                return Direction.SOUTHEAST;
+                            }
                         }
                     }
                 }
             }
         }
 
-        return Direction.getDirection(0,0);
+        return Direction.STAY;
     }
 
 
@@ -136,202 +128,129 @@ public final class Hero extends Entity{
      * @return direction to move in
      */
     public Direction chooseMove(World local) {
-        int heroRow = 0;
-        int heroCol = 0;
+        //This is under the assumption that the parameter local is already local to the hero
         for (int i = 0; i < local.getRows(); i++) {
             for (int j = 0; j < local.getColumns(); j++) {
-                if (local.isHero(i,j)) {
-                    heroRow = i;
-                    heroCol = j;
-                }
-            }
-        }
-
-        World heroLocal = local.getLocal(5,heroRow,heroCol);
-        for (int i = 0; i < heroLocal.getRows(); i++) {
-            for (int j = 0; j < heroLocal.getColumns(); j++) {
-                if (heroLocal.isMonster(i,j) && heroLocal.getEntity(i,j).isAlive()) {
-                    if (i == 0) {
-                        if (j == 0) {
-                            if (heroLocal.canMoveOnTopOf(i + 1, j + 1)) {
-                                return Direction.getDirection(-2, -2);
-                            } else {
+                if (i != 2 || j != 2) {
+                    if (local.isMonster(i, j) && local.getEntity(i, j).isAlive()) {
+                        if (i == 0) {
+                            if (j == 0) {
                                 Direction[] directions = Direction.getDirections(-2, -2);
                                 for (Direction direction : directions) {
-                                    if (heroLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows()-1)/2 + direction.getRowChange(), (local.getColumns()-1)/2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
-                            }
-                        } else if (j == 1) {
-                            if (heroLocal.canMoveOnTopOf(i + 1, j + 1) || heroLocal.canMoveOnTopOf(i+1, j)) {
-                                return Direction.getDirection(-2, -1);
-                            } else {
+                            } else if (j == 1) {
                                 Direction[] directions = Direction.getDirections(-2, -1);
                                 for (Direction direction : directions) {
-                                    if (heroLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows()-1)/2 + direction.getRowChange(), (local.getColumns()-1)/2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
-                            }
-                        } else if (j == 2) {
-                            if (heroLocal.canMoveOnTopOf(i + 1, j)) {
-                                return Direction.getDirection(-2, 0);
-                            } else {
+                            } else if (j == 2) {
                                 Direction[] directions = Direction.getDirections(-2, 0);
                                 for (Direction direction : directions) {
-                                    if (heroLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows()-1)/2 + direction.getRowChange(), (local.getColumns()-1)/2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
-                            }
-                        } else if (j == 3) {
-                            if (heroLocal.canMoveOnTopOf(i + 1, j - 1) || heroLocal.canMoveOnTopOf(i + 1, j)) {
-                                return Direction.getDirection(-2, 1);
-                            } else {
+                            } else if (j == 3) {
                                 Direction[] directions = Direction.getDirections(-2, 1);
                                 for (Direction direction : directions) {
-                                    if (heroLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows()-1)/2 + direction.getRowChange(), (local.getColumns()-1)/2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
-                            }
-                        } else if (j == 4) {
-                            if (heroLocal.canMoveOnTopOf(i + 1, j - 1)) {
-                                return Direction.getDirection(-2, 2);
-                            } else {
+                            } else if (j == 4) {
                                 Direction[] directions = Direction.getDirections(-2, 2);
                                 for (Direction direction : directions) {
-                                    if (heroLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows()-1)/2 + direction.getRowChange(), (local.getColumns()-1)/2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
                             }
-                        }
-                    } else if (i == 1) {
-                        if (j == 0) {
-                            if (heroLocal.canMoveOnTopOf(i + 1, j + 1) || heroLocal.canMoveOnTopOf(i, j+1)) {
-                                return Direction.getDirection(-1, -2);
-                            } else {
+                        } else if (i == 1) {
+                            if (j == 0) {
                                 Direction[] directions = Direction.getDirections(-1, -2);
                                 for (Direction direction : directions) {
-                                    if (heroLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows()-1)/2 + direction.getRowChange(), (local.getColumns()-1)/2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
-                            }
-                        } else if (j == 4) {
-                            if (heroLocal.canMoveOnTopOf(i + 1, j - 1) || heroLocal.canMoveOnTopOf(i, j-1)) {
-                                return Direction.getDirection(-1, 2);
-                            } else {
+                            } else if (j == 4) {
                                 Direction[] directions = Direction.getDirections(-1, 2);
                                 for (Direction direction : directions) {
-                                    if (heroLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows()-1)/2 + direction.getRowChange(), (local.getColumns()-1)/2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
                             }
-                        }
-                    } else if (i == 2) {
-                        if (j == 0) {
-                            if (heroLocal.canMoveOnTopOf(i, j + 1)) {
-                                return Direction.getDirection(0, -2);
-                            } else {
+                        } else if (i == 2) {
+                            if (j == 0) {
                                 Direction[] directions = Direction.getDirections(0, -2);
                                 for (Direction direction : directions) {
-                                    if (heroLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows()-1)/2 + direction.getRowChange(), (local.getColumns()-1)/2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
-                            }
-                        } else if (j == 4) {
-                            if (heroLocal.canMoveOnTopOf(i, j - 1)) {
-                                return Direction.getDirection(0, 2);
-                            } else {
+                            } else if (j == 4) {
                                 Direction[] directions = Direction.getDirections(0, 2);
                                 for (Direction direction : directions) {
-                                    if (heroLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows()-1)/2 + direction.getRowChange(), (local.getColumns()-1)/2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
                             }
-                        }
-                    } else if (i == 3) {
-                        if (j == 0) {
-                            if (heroLocal.canMoveOnTopOf(i -1, j + 1) || heroLocal.canMoveOnTopOf(i, j+1)) {
-                                return Direction.getDirection(1, -2);
-                            } else {
+                        } else if (i == 3) {
+                            if (j == 0) {
                                 Direction[] directions = Direction.getDirections(1, -2);
                                 for (Direction direction : directions) {
-                                    if (heroLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows()-1)/2 + direction.getRowChange(), (local.getColumns()-1)/2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
-                            }
-                        } else if (j == 4) {
-                            if (heroLocal.canMoveOnTopOf(i - 1, j - 1) || heroLocal.canMoveOnTopOf(i, j-1)) {
-                                return Direction.getDirection(1, 2);
-                            } else {
+                            } else if (j == 4) {
                                 Direction[] directions = Direction.getDirections(1, 2);
                                 for (Direction direction : directions) {
-                                    if (heroLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows()-1)/2 + direction.getRowChange(), (local.getColumns()-1)/2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
                             }
-                        }
-                    } else if (i == 4) {
-                        if (j == 0) {
-                            if (heroLocal.canMoveOnTopOf(i - 1, j + 1)) {
-                                return Direction.getDirection(2, -2);
-                            } else {
+                        } else if (i == 4) {
+                            if (j == 0) {
                                 Direction[] directions = Direction.getDirections(2, -2);
                                 for (Direction direction : directions) {
-                                    if (heroLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows()-1)/2 + direction.getRowChange(), (local.getColumns()-1)/2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
-                            }
-                        } else if (j == 1) {
-                            if (heroLocal.canMoveOnTopOf(i - 1, j + 1) || heroLocal.canMoveOnTopOf(i-1, j)) {
-                                return Direction.getDirection(2, -1);
-                            } else {
+                            } else if (j == 1) {
                                 Direction[] directions = Direction.getDirections(2, -1);
                                 for (Direction direction : directions) {
-                                    if (heroLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows()-1)/2 + direction.getRowChange(), (local.getColumns()-1)/2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
-                            }
-                        } else if (j == 2) {
-                            if (heroLocal.canMoveOnTopOf(i - 1, j)) {
-                                return Direction.getDirection(2, 0);
-                            } else {
+                            } else if (j == 2) {
                                 Direction[] directions = Direction.getDirections(2, 0);
                                 for (Direction direction : directions) {
-                                    if (heroLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows()-1)/2 + direction.getRowChange(), (local.getColumns()-1)/2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
-                            }
-                        } else if (j == 3) {
-                            if (heroLocal.canMoveOnTopOf(i - 1, j - 1) || heroLocal.canMoveOnTopOf(i - 1, j)) {
-                                return Direction.getDirection(2, 1);
-                            } else {
+                            } else if (j == 3) {
                                 Direction[] directions = Direction.getDirections(2, 1);
                                 for (Direction direction : directions) {
-                                    if (heroLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows()-1)/2 + direction.getRowChange(), (local.getColumns()-1)/2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
-                            }
-                        } else if (j == 4) {
-                            if (heroLocal.canMoveOnTopOf(i - 1, j - 1)) {
-                                return Direction.getDirection(2, 2);
-                            } else {
+                            } else if (j == 4) {
                                 Direction[] directions = Direction.getDirections(2, 2);
                                 for (Direction direction : directions) {
-                                    if (heroLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows()-1)/2 + direction.getRowChange(), (local.getColumns()-1)/2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
@@ -342,16 +261,19 @@ public final class Hero extends Entity{
             }
         }
 
-        if (heroLocal.canMoveOnTopOf(-1,-1)) {
-            return Direction.getDirection(-1, -1);
+        //Attempt to move northwest if no nearby monsters
+        if (local.canMoveOnTopOf(local.getRows()/2 - 1, local.getColumns()/2 - 1)) {
+            return Direction.NORTHWEST;
         } else {
+            //Attempt to move random direction if unable to go northwest
             int rowChange = Direction.getRandomDirection().getRowChange();
             int columnChange = Direction.getRandomDirection().getColumnChange();
-            if (heroLocal.canMoveOnTopOf(rowChange, columnChange)) {
+            if (local.canMoveOnTopOf(rowChange, columnChange)) {
                 return Direction.getDirection(rowChange, columnChange);
             }
         }
 
-        return Direction.getDirection(0,0);
+        //Stay in place if random direction doesn't work
+        return Direction.STAY;
     }
 }

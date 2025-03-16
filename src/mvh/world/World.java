@@ -316,9 +316,6 @@ public class World {
         return entity instanceof Monster;
     }
 
-    //TODO: getLocal
-    //Check back later
-
     /**
      * Return a nxn mini-view of the world
      *
@@ -356,8 +353,14 @@ public class World {
      */
     public String worldString() {
         StringBuilder output = new StringBuilder();
+        for (int i = 0; i < world[0].length+2; i++) {
+            output.append(Symbol.WALL.getSymbol());
+        }
+        output.append("\n");
+
         for (int row = 0; row < world.length; row++) {
-            for (int column = 0; column < world[row].length; column++) {
+            output.append(Symbol.WALL.getSymbol());
+            for (int column = 0; column < world[0].length; column++) {
                 if (world[row][column] instanceof Wall) {
                     output.append(Symbol.WALL.getSymbol());
                 } else if (world[row][column] instanceof Monster) {
@@ -376,8 +379,14 @@ public class World {
                     output.append(Symbol.FLOOR.getSymbol());
                 }
             }
-            output.append("\n");
+            output.append(Symbol.WALL.getSymbol()+ "\n");
         }
+
+        for (int i = 0; i < world[0].length+2; i++) {
+            output.append(Symbol.WALL.getSymbol());
+        }
+        output.append("\n");
+
         return output.toString();
     }
 
@@ -388,20 +397,19 @@ public class World {
      */
     public String gameString() {
         StringBuilder output = new StringBuilder();
-        worldString();
-        output.append("NAME\tS\tH\tSTATE\tINFO\n");
+        output.append(worldString());
+        //Adds world view to the StringBuilder
+        output.append("NAME   \tS\tH\tSTATE\tINFO\n");
         for (int row = 0; row < world.length; row++) {
-            for (int column = 0; column < world[row].length; column++) {
+            for (int column = 0; column < world[0].length; column++) {
                 if (world[row][column] instanceof Monster) {
                     String data = world[row][column].toString();
 
-                    output.append(data);
-                    //Finish later
+                    output.append(data + "\n");
                 } else if (world[row][column] instanceof Hero) {
                     String data = world[row][column].toString();
 
-                    output.append(data);
-                    //Finish later
+                    output.append(data + "\n");
                 }
             }
         }

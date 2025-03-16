@@ -82,7 +82,6 @@ public final class Monster extends Entity {
         return super.toString() + "\t" + weaponType;
     }
 
-    //TODO: attackWhere
     /**
      * Moves to hero location to attack if there is a hero nearby
      *
@@ -91,22 +90,11 @@ public final class Monster extends Entity {
      * @return direction to reach monster or null if there are none nearby
      */
     public Direction attackWhere(World local) {
-        int monsterRow = 0;
-        int monsterCol = 0;
-        for (int i = 0; i < local.getRows(); i++) {
-            for (int j = 0; j < local.getColumns(); j++) {
-                if (local.isMonster(i,j)) {
-                    monsterRow = i;
-                    monsterCol = j;
-                }
-            }
-        }
-
-        World monsterLocal = local.getLocal(3, monsterRow, monsterCol);
-        for (int i = monsterLocal.getRows()-1; i >= 0; i--) {
-            for (int j = monsterLocal.getColumns()-1; j >= 0; j--) {
-                if (monsterLocal.isHero(i,j)) {
-                    Entity hero = monsterLocal.getEntity(i,j);
+        //This is under the assumption that the parameter local is already local to the hero
+        for (int i = local.getRows()-1; i >= 0; i--) {
+            for (int j = local.getColumns()-1; j >= 0; j--) {
+                if (local.isHero(i,j)) {
+                    Entity hero = local.getEntity(i,j);
                     if (hero.isAlive()) {
                         if (i == 0 && j == 0) {
                             return Direction.getDirection(-1,-1);
@@ -142,202 +130,129 @@ public final class Monster extends Entity {
      * @return direction to move in
      */
     public Direction chooseMove(World local) {
-        int monsterRow = 0;
-        int monsterCol = 0;
+        //This is under the assumption that the parameter local is already local to the monster
         for (int i = local.getRows()-1; i >= 0; i--) {
             for (int j = local.getColumns()-1; j >= 0; j--) {
-                if (local.isMonster(i,j)) {
-                    monsterRow = i;
-                    monsterCol = j;
-                }
-            }
-        }
-
-        World monsterLocal = local.getLocal(5, monsterRow, monsterCol);
-        for (int i = monsterLocal.getRows()-1; i >= 0; i--) {
-            for (int j = monsterLocal.getColumns()-1; j >= 0; j--) {
-                if (monsterLocal.isHero(i,j) && monsterLocal.getEntity(i,j).isAlive()) {
-                    if (i == 0) {
-                        if (j == 0) {
-                            if (monsterLocal.canMoveOnTopOf(i + 1, j + 1)) {
-                                return Direction.getDirection(-2, -2);
-                            } else {
+                if (i != 2 || j != 2) {
+                    if (local.isHero(i, j) && local.getEntity(i, j).isAlive()) {
+                        if (i == 0) {
+                            if (j == 0) {
                                 Direction[] directions = Direction.getDirections(-2, -2);
                                 for (Direction direction : directions) {
-                                    if (monsterLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows() - 1) / 2 + direction.getRowChange(), (local.getColumns() - 1) / 2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
-                            }
-                        } else if (j == 1) {
-                            if (monsterLocal.canMoveOnTopOf(i + 1, j + 1) || monsterLocal.canMoveOnTopOf(i+1, j)) {
-                                return Direction.getDirection(-2, -1);
-                            } else {
+                            } else if (j == 1) {
                                 Direction[] directions = Direction.getDirections(-2, -1);
                                 for (Direction direction : directions) {
-                                    if (monsterLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows() - 1) / 2 + direction.getRowChange(), (local.getColumns() - 1) / 2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
-                            }
-                        } else if (j == 2) {
-                            if (monsterLocal.canMoveOnTopOf(i + 1, j)) {
-                                return Direction.getDirection(-2, 0);
-                            } else {
+                            } else if (j == 2) {
                                 Direction[] directions = Direction.getDirections(-2, 0);
                                 for (Direction direction : directions) {
-                                    if (monsterLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows() - 1) / 2 + direction.getRowChange(), (local.getColumns() - 1) / 2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
-                            }
-                        } else if (j == 3) {
-                            if (monsterLocal.canMoveOnTopOf(i + 1, j - 1) || monsterLocal.canMoveOnTopOf(i + 1, j)) {
-                                return Direction.getDirection(-2, 1);
-                            } else {
+                            } else if (j == 3) {
                                 Direction[] directions = Direction.getDirections(-2, 1);
                                 for (Direction direction : directions) {
-                                    if (monsterLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows() - 1) / 2 + direction.getRowChange(), (local.getColumns() - 1) / 2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
-                            }
-                        } else if (j == 4) {
-                            if (monsterLocal.canMoveOnTopOf(i + 1, j - 1)) {
-                                return Direction.getDirection(-2, 2);
-                            } else {
+                            } else if (j == 4) {
                                 Direction[] directions = Direction.getDirections(-2, 2);
                                 for (Direction direction : directions) {
-                                    if (monsterLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows() - 1) / 2 + direction.getRowChange(), (local.getColumns() - 1) / 2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
                             }
-                        }
-                    } else if (i == 1) {
-                        if (j == 0) {
-                            if (monsterLocal.canMoveOnTopOf(i + 1, j + 1) || monsterLocal.canMoveOnTopOf(i, j+1)) {
-                                return Direction.getDirection(-1, -2);
-                            } else {
+                        } else if (i == 1) {
+                            if (j == 0) {
                                 Direction[] directions = Direction.getDirections(-1, -2);
                                 for (Direction direction : directions) {
-                                    if (monsterLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows() - 1) / 2 + direction.getRowChange(), (local.getColumns() - 1) / 2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
-                            }
-                        } else if (j == 4) {
-                            if (monsterLocal.canMoveOnTopOf(i + 1, j - 1) || monsterLocal.canMoveOnTopOf(i, j-1)) {
-                                return Direction.getDirection(-1, 2);
-                            } else {
+                            } else if (j == 4) {
                                 Direction[] directions = Direction.getDirections(-1, 2);
                                 for (Direction direction : directions) {
-                                    if (monsterLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows() - 1) / 2 + direction.getRowChange(), (local.getColumns() - 1) / 2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
                             }
-                        }
-                    } else if (i == 2) {
-                        if (j == 0) {
-                            if (monsterLocal.canMoveOnTopOf(i, j + 1)) {
-                                return Direction.getDirection(0, -2);
-                            } else {
+                        } else if (i == 2) {
+                            if (j == 0) {
                                 Direction[] directions = Direction.getDirections(0, -2);
                                 for (Direction direction : directions) {
-                                    if (monsterLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows() - 1) / 2 + direction.getRowChange(), (local.getColumns() - 1) / 2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
-                            }
-                        } else if (j == 4) {
-                            if (monsterLocal.canMoveOnTopOf(i, j - 1)) {
-                                return Direction.getDirection(0, 2);
-                            } else {
+                            } else if (j == 4) {
                                 Direction[] directions = Direction.getDirections(0, 2);
                                 for (Direction direction : directions) {
-                                    if (monsterLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows() - 1) / 2 + direction.getRowChange(), (local.getColumns() - 1) / 2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
                             }
-                        }
-                    } else if (i == 3) {
-                        if (j == 0) {
-                            if (monsterLocal.canMoveOnTopOf(i -1, j + 1) || monsterLocal.canMoveOnTopOf(i, j+1)) {
-                                return Direction.getDirection(1, -2);
-                            } else {
+                        } else if (i == 3) {
+                            if (j == 0) {
                                 Direction[] directions = Direction.getDirections(1, -2);
                                 for (Direction direction : directions) {
-                                    if (monsterLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows() - 1) / 2 + direction.getRowChange(), (local.getColumns() - 1) / 2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
-                            }
-                        } else if (j == 4) {
-                            if (monsterLocal.canMoveOnTopOf(i - 1, j - 1) || monsterLocal.canMoveOnTopOf(i, j-1)) {
-                                return Direction.getDirection(1, 2);
-                            } else {
+                            } else if (j == 4) {
                                 Direction[] directions = Direction.getDirections(1, 2);
                                 for (Direction direction : directions) {
-                                    if (monsterLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows() - 1) / 2 + direction.getRowChange(), (local.getColumns() - 1) / 2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
                             }
-                        }
-                    } else if (i == 4) {
-                        if (j == 0) {
-                            if (monsterLocal.canMoveOnTopOf(i - 1, j + 1)) {
-                                return Direction.getDirection(2, -2);
-                            } else {
+                        } else if (i == 4) {
+                            if (j == 0) {
                                 Direction[] directions = Direction.getDirections(2, -2);
                                 for (Direction direction : directions) {
-                                    if (monsterLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows() - 1) / 2 + direction.getRowChange(), (local.getColumns() - 1) / 2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
-                            }
-                        } else if (j == 1) {
-                            if (monsterLocal.canMoveOnTopOf(i - 1, j + 1) || monsterLocal.canMoveOnTopOf(i-1, j)) {
-                                return Direction.getDirection(2, -1);
-                            } else {
+                            } else if (j == 1) {
                                 Direction[] directions = Direction.getDirections(2, -1);
                                 for (Direction direction : directions) {
-                                    if (monsterLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows() - 1) / 2 + direction.getRowChange(), (local.getColumns() - 1) / 2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
-                            }
-                        } else if (j == 2) {
-                            if (monsterLocal.canMoveOnTopOf(i - 1, j)) {
-                                return Direction.getDirection(2, 0);
-                            } else {
+                            } else if (j == 2) {
                                 Direction[] directions = Direction.getDirections(2, 0);
                                 for (Direction direction : directions) {
-                                    if (monsterLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows() - 1) / 2 + direction.getRowChange(), (local.getColumns() - 1) / 2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
-                            }
-                        } else if (j == 3) {
-                            if (monsterLocal.canMoveOnTopOf(i - 1, j - 1) || monsterLocal.canMoveOnTopOf(i - 1, j)) {
-                                return Direction.getDirection(2, 1);
-                            } else {
+                            } else if (j == 3) {
                                 Direction[] directions = Direction.getDirections(2, 1);
                                 for (Direction direction : directions) {
-                                    if (monsterLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows() - 1) / 2 + direction.getRowChange(), (local.getColumns() - 1) / 2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
-                            }
-                        } else if (j == 4) {
-                            if (monsterLocal.canMoveOnTopOf(i - 1, j - 1)) {
-                                return Direction.getDirection(2, 2);
-                            } else {
+                            } else if (j == 4) {
                                 Direction[] directions = Direction.getDirections(2, 2);
                                 for (Direction direction : directions) {
-                                    if (monsterLocal.canMoveOnTopOf(direction.getRowChange(), direction.getColumnChange())) {
+                                    if (local.canMoveOnTopOf((local.getRows() - 1) / 2 + direction.getRowChange(), (local.getColumns() - 1) / 2 + direction.getColumnChange())) {
                                         return direction;
                                     }
                                 }
@@ -348,16 +263,19 @@ public final class Monster extends Entity {
             }
         }
 
-        if (monsterLocal.canMoveOnTopOf(-1,-1)) {
-            return Direction.getDirection(-1, -1);
+        //Attempt to move southeast if no nearby monsters
+        if (local.canMoveOnTopOf(local.getRows()/2 - 1, local.getColumns()/2 - 1)) {
+            return Direction.SOUTHEAST;
         } else {
+            //Attempt to move random direction if unable to go southeast
             int rowChange = Direction.getRandomDirection().getRowChange();
             int columnChange = Direction.getRandomDirection().getColumnChange();
-            if (monsterLocal.canMoveOnTopOf(rowChange, columnChange)) {
+            if (local.canMoveOnTopOf(rowChange, columnChange)) {
                 return Direction.getDirection(rowChange, columnChange);
             }
         }
 
-        return Direction.getDirection(0,0);
+        //Stay in place if random direction doesn't work
+        return Direction.STAY;
     }
 }

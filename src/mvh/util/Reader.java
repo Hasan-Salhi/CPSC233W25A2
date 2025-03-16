@@ -41,7 +41,7 @@ public final class Reader {
                         String weaponSymbol = Character.toString(split[5].charAt(0));
                         WeaponType weapon = null;
                         if (weaponSymbol.equals("C")) {
-                            weapon = WeaponType.SWORD;
+                            weapon = WeaponType.CLUB;
                         } else if (weaponSymbol.equals("A")) {
                             weapon = WeaponType.AXE;
                         } else if (weaponSymbol.equals("S")) {
@@ -68,8 +68,6 @@ public final class Reader {
                         world.addEntity(x,y,Wall.getWall());
                     }
                 }
-
-                line = fr.next();
 
             } while (fr.hasNext());
         } catch (FileNotFoundException e) {
