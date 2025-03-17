@@ -21,16 +21,3 @@ NAME   	S	H	STATE	INFO
 Mons(1)	M	10	ALIVE	SWORD
 Hero(2)	H	9	ALIVE	3	1
 
-Mons(1) attacking STAY in direction Mons(1)
-Mons(1) attacked Mons(1) for 4 damage against 2 defense for 2
-Hero(2) attacking STAY in direction Hero(2)
-Hero(2) attacked Hero(2) for 1 damage against 1 defense for 0
-#####
-#M..#
-#...#
-#..H#
-#####
-NAME   	S	H	STATE	INFO
-Mons(1)	M	8	ALIVE	SWORD
-Hero(2)	H	9	ALIVE	3	1
-
